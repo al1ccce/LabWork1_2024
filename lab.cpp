@@ -772,7 +772,7 @@ int main(int argc, char* argv[]){
             // 1. Добавить имечко)
             iss >> word;
             string namestruct = '@' + word;
-            addStructName(file, word); // Только если файл пуст, не ссать
+            addStructName(file, word); // Только если файл пуст
             // 2. Создать структурочку и записать в нее данные из файлика)
             Vector v;
             vectorFromFile(file, v);
