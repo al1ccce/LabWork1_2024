@@ -2,6 +2,7 @@
 #include <sstream>
 #include <fstream>
 #include <filesystem>
+#include <cmath>
 using namespace std;
 
 struct Node{
@@ -569,25 +570,13 @@ struct FullBinaryTree {
         return false;
     }
 
-    void remove(int value) {
-        int index = -1;
-        for (int i = 0; i < size; ++i) {
-            if (nodes[i] == value) {
-                index = i;
-                break;
-            }
+    bool isFull() {
+        int h = log2(size+1);
+        int n = pow(2, h) - 1;
+        if (size == n){
+            return true;
         }
-        if (index == -1) {
-            cout << "Такого элемента не существует." << endl;
-            return;
-        }
-        nodes[index] = nodes[size - 1];
-        --size;
-        // Перестраиваем дерево, чтобы сохранить его структуру
-        while (index > 0 && nodes[index] < nodes[(index - 1) / 2]) {
-            swap(nodes[index], nodes[(index - 1) / 2]);
-            index = (index - 1) / 2;
-        }
+        return false;
     }
 
     void print(string file, string namestruct){
@@ -1094,24 +1083,13 @@ int main(int argc, char* argv[]){
             cout << "Done!" << endl;
             return 0;
         }
-        if (word == "TDEL"){
+        if (word == "TFULL"){
             iss >> word;
             string namestruct = '@' + word;
             addStructName(file, word); 
             FullBinaryTree tree;
             treeFromFile(file, tree);
-            iss >> word;
-            string val = word;
-            try {
-                stoi(val);
-            }
-            catch (...){
-                cerr << "cannot stoi string arguement" << endl;
-                exit(0);
-            }            
-            tree.remove(stoi(val));
-            tree.print(file, namestruct);
-            cout << "Done!" << endl;
+            cout << boolalpha << tree.isFull() << endl;
             return 0;
         }
         if (word == "TFIND"){
